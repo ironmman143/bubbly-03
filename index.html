@@ -3,181 +3,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fun Question</title>
+<title>Just a Question</title>
 
 <style>
 body{
 margin:0;
-font-family:"Noto Color Emoji","Segoe UI Emoji","Apple Color Emoji",Arial,sans-serif;
-color:white;
-text-align:center;
-background:#000;
+font-family:"Segoe UI",Arial,sans-serif;
+background:linear-gradient(180deg,#081a33,#020814);
+color:#e8f1ff;
+height:100vh;
 overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-/* ===== Background Maha ===== */
-.bgText{
+/* ===== Moving Maha💫 Background ===== */
+.bg{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-height:100%;
-z-index:-2;
-opacity:0.18;                 /*  more visible */
+height:200%;
+z-index:-1;
+opacity:0.15;
 font-size:14px;
-color:#00aaff;
+color:#4fa3ff;
 display:flex;
 flex-wrap:wrap;
-align-content:flex-start;
-animation:scrollBg 35s linear infinite;
+animation:scrollBg 30s linear infinite;
 pointer-events:none;
 }
-
-.bgText span{
-margin:6px 10px;
-letter-spacing:1px;
-text-shadow:0 0 6px rgba(0,170,255,0.6);
-}
+.bg span{margin:8px 12px;}
 
 @keyframes scrollBg{
 0%{transform:translateY(0);}
-100%{transform:translateY(-250px);}
+100%{transform:translateY(-50%);}
 }
 
-/* ===== Question ===== */
+/* ===== Card ===== */
+.card{
+width:90%;
+max-width:420px;
+background:rgba(10,25,50,0.65);
+border-radius:20px;
+padding:30px 24px;
+text-align:center;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
+position:relative;
+}
+
+/* Question */
 .question{
-margin-top:40px;
-font-size:28px;
-color:#00ccff;
-text-shadow:0 0 12px #00aaff;
+font-size:22px;
+margin-bottom:25px;
 }
 
-/* ===== Buttons ===== */
-.buttonBox{
-margin-top:80px;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:30px;
-height:200px;
-}
-
+/* Buttons */
 .option{
-padding:14px 32px;
+width:100%;
+padding:14px;
+margin:10px 0;
 border:none;
-border-radius:30px;
-background:linear-gradient(45deg,#007bff,#00aaff);
+border-radius:14px;
+background:linear-gradient(135deg,#1e6bff,#4fa3ff);
 color:white;
-font-size:17px;
+font-size:16px;
 cursor:pointer;
 }
 
-/* ===== Typing box ===== */
-#typingBox{
-display:none;
-margin-top:50px;
-}
-
-#typingBox h3{
-letter-spacing:2px;
-}
-
+/* Typing */
+#typingBox{display:none;margin-top:20px;}
 input{
+width:100%;
 padding:12px;
-width:260px;
-border-radius:20px;
+border-radius:12px;
 border:none;
-font-size:16px;
 outline:none;
+font-size:15px;
+background:#0c1f3f;
+color:#e8f1ff;
 }
+.send{margin-top:12px;background:#3a8bff;}
 
-.sendBtn{
-margin-top:14px;
-padding:12px 28px;
-border-radius:25px;
-border:none;
-background:#00aaff;
-color:white;
-font-size:16px;
-}
+#thanks{display:none;margin-top:20px;font-size:20px;}
 </style>
 </head>
 
 <body>
 
 <!-- Background -->
-<div class="bgText" id="bg">
+<div class="bg">
 <script>
-for(let i=0;i<650;i++){
-document.write("<span>Maha&#128171;</span>"); // 
+for(let i=0;i<600;i++){
+document.write("<span>Maha💫</span>");
 }
 </script>
 </div>
 
-<h2 class="question">What are you, Bubbly? &#128516;</h2>
+<div class="card" id="card">
 
-<div class="buttonBox">
-    <button class="option" id="b1">Introvert &#128524;</button>
-    <button class="option" id="b2">Extrovert &#128540;</button>
-</div>
+<div class="question">What are you, Bubbly? 😁</div>
+
+<button class="option" id="b1">Introvert 😌</button>
+<button class="option" id="b2">Extrovert 😜</button>
 
 <div id="typingBox">
-    <h3>OK TYPE NOW &#9000;</h3>
-    <input id="msg" type="text" placeholder="Type anything..." />
-    <br>
-    <button class="sendBtn" onclick="sendWA()">Send</button>
+<h3>OK TYPE NOW</h3>
+<input id="msg" placeholder="Type here..." />
+<button class="option send" onclick="sendWA()">Send</button>
+</div>
+
+<div id="thanks">Thenks Maha 😄</div>
+
 </div>
 
 <script>
-/* ===== Sound ===== */
-const clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
-clickSound.volume = 0.6;
+/* Soft tap sound (VERY reliable) */
+const sound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
+sound.volume = 0.4;
 
-/* unlock audio on phone */
-document.body.addEventListener("touchstart", () => {
-clickSound.play().then(()=>{
-clickSound.pause();
-clickSound.currentTime=0;
-});
-},{once:true});
-
-let tries=0;
-const maxTries=4;
+let tries = 0;
+const maxTries = 3;
 
 function move(btn){
-clickSound.currentTime=0;
-clickSound.play();
+  // play sound (allowed because user tapped)
+  sound.currentTime = 0;
+  sound.play();
 
-btn.style.position="absolute";
-btn.style.left=Math.random()*(window.innerWidth-150)+"px";
-btn.style.top=Math.random()*(window.innerHeight-150)+"px";
+  if(tries < maxTries){
+    const card = document.getElementById("card");
+    const rect = card.getBoundingClientRect();
 
-tries++;
-if(tries>=maxTries){
-document.querySelector(".buttonBox").style.display="none";
-document.getElementById("typingBox").style.display="block";
-document.getElementById("bg").style.opacity="0.1"; // still visible
+    btn.style.position = "fixed";
+    btn.style.left = rect.left + Math.random()*(card.clientWidth-160) + "px";
+    btn.style.top  = rect.top  + Math.random()*(card.clientHeight-100) + "px";
+
+    tries++;
+  } else {
+    showTyping();
+  }
 }
+
+function showTyping(){
+  document.getElementById("b1").style.display="none";
+  document.getElementById("b2").style.display="none";
+  document.getElementById("typingBox").style.display="block";
 }
 
-const b1=document.getElementById("b1");
-const b2=document.getElementById("b2");
-
-b1.addEventListener("mouseover",()=>move(b1));
-b2.addEventListener("mouseover",()=>move(b2));
+/* ONLY touchstart — reliable */
 b1.addEventListener("touchstart",()=>move(b1));
 b2.addEventListener("touchstart",()=>move(b2));
 
+/* WhatsApp send */
 function sendWA(){
-const text=document.getElementById("msg").value;
-if(!text) return alert("Type something");
+  const text=document.getElementById("msg").value;
+  if(!text) return;
 
-const phone="918106362042"; //  PUT YOUR NUMBER
-const msg=encodeURIComponent("I typed \uD83D\uDE01\n\n"+text);
-window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
+  const phone="918106362042"; // PUT YOUR NUMBER
+  const msg=encodeURIComponent("I typed 😁\n\n"+text);
+  window.location.href=`https://wa.me/${phone}?text=${msg}`;
 
-document.getElementById("typingBox").innerHTML =
-"<h2>Thenks Maha &#128516;</h2>";
+  setTimeout(()=>{
+    document.getElementById("typingBox").style.display="none";
+    document.getElementById("thanks").style.display="block";
+  },600);
 }
 </script>
 
