@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Question</title>
+
+<style>
+body{
+margin:0;
+font-family:"Noto Color Emoji","Segoe UI Emoji","Apple Color Emoji",Arial,sans-serif;
+color:white;
+text-align:center;
+background:#000;
+overflow:hidden;
+}
+
+/* ===== Background Maha ===== */
+.bgText{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
+opacity:0.18;                 /*  more visible */
+font-size:14px;
+color:#00aaff;
+display:flex;
+flex-wrap:wrap;
+align-content:flex-start;
+animation:scrollBg 35s linear infinite;
+pointer-events:none;
+}
+
+.bgText span{
+margin:6px 10px;
+letter-spacing:1px;
+text-shadow:0 0 6px rgba(0,170,255,0.6);
+}
+
+@keyframes scrollBg{
+0%{transform:translateY(0);}
+100%{transform:translateY(-250px);}
+}
+
+/* ===== Question ===== */
+.question{
+margin-top:40px;
+font-size:28px;
+color:#00ccff;
+text-shadow:0 0 12px #00aaff;
+}
+
+/* ===== Buttons ===== */
+.buttonBox{
+margin-top:80px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:30px;
+height:200px;
+}
+
+.option{
+padding:14px 32px;
+border:none;
+border-radius:30px;
+background:linear-gradient(45deg,#007bff,#00aaff);
+color:white;
+font-size:17px;
+cursor:pointer;
+}
+
+/* ===== Typing box ===== */
+#typingBox{
+display:none;
+margin-top:50px;
+}
+
+#typingBox h3{
+letter-spacing:2px;
+}
+
+input{
+padding:12px;
+width:260px;
+border-radius:20px;
+border:none;
+font-size:16px;
+outline:none;
+}
+
+.sendBtn{
+margin-top:14px;
+padding:12px 28px;
+border-radius:25px;
+border:none;
+background:#00aaff;
+color:white;
+font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background -->
+<div class="bgText" id="bg">
+<script>
+for(let i=0;i<650;i++){
+document.write("<span>Maha&#128171;</span>"); // 
+}
+</script>
+</div>
+
+<h2 class="question">What are you, Bubbly? &#128516;</h2>
+
+<div class="buttonBox">
+    <button class="option" id="b1">Introvert &#128524;</button>
+    <button class="option" id="b2">Extrovert &#128540;</button>
+</div>
+
+<div id="typingBox">
+    <h3>OK TYPE NOW &#9000;</h3>
+    <input id="msg" type="text" placeholder="Type anything..." />
+    <br>
+    <button class="sendBtn" onclick="sendWA()">Send</button>
+</div>
+
+<script>
+/* ===== Sound ===== */
+const clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+clickSound.volume = 0.6;
+
+/* unlock audio on phone */
+document.body.addEventListener("touchstart", () => {
+clickSound.play().then(()=>{
+clickSound.pause();
+clickSound.currentTime=0;
+});
+},{once:true});
+
+let tries=0;
+const maxTries=4;
+
+function move(btn){
+clickSound.currentTime=0;
+clickSound.play();
+
+btn.style.position="absolute";
+btn.style.left=Math.random()*(window.innerWidth-150)+"px";
+btn.style.top=Math.random()*(window.innerHeight-150)+"px";
+
+tries++;
+if(tries>=maxTries){
+document.querySelector(".buttonBox").style.display="none";
+document.getElementById("typingBox").style.display="block";
+document.getElementById("bg").style.opacity="0.1"; // still visible
+}
+}
+
+const b1=document.getElementById("b1");
+const b2=document.getElementById("b2");
+
+b1.addEventListener("mouseover",()=>move(b1));
+b2.addEventListener("mouseover",()=>move(b2));
+b1.addEventListener("touchstart",()=>move(b1));
+b2.addEventListener("touchstart",()=>move(b2));
+
+function sendWA(){
+const text=document.getElementById("msg").value;
+if(!text) return alert("Type something");
+
+const phone="918106362042"; //  PUT YOUR NUMBER
+const msg=encodeURIComponent("I typed \uD83D\uDE01\n\n"+text);
+window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
+
+document.getElementById("typingBox").innerHTML =
+"<h2>Thenks Maha &#128516;</h2>";
+}
+</script>
+
+</body>
+</html>
